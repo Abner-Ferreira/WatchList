@@ -27,8 +27,8 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 | campo | tipo | obrigatório | descrição 
 |-------|------|-------------|-----------
 | nome | String | sim | É o nome da série
-| categoria_id | int | sim | é o id de uma categoria
-| usuario_id| int | sim | é o id do usuário
+| categoria_id | int | sim | É o id de uma categoria
+| usuario_id| int | sim | É o id do usuário
 | nome_diretor | String | sim | É o nome do diretor
 | duracao | String | não | Aqui se coloca a quantidade de temporadas
 
@@ -50,8 +50,8 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 | codigo | descrição
 |--------|-----------
-| 201 | série cadastrada com sucesso
-| 400 | erro na validaçao dos dados da requisição
+| 201 | Série cadastrada com sucesso
+| 400 | Erro na validação dos dados da requisição
 
 ---
 
@@ -82,8 +82,8 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 | código | descrição 
 |--------|-----------
-| 200 | dados retornados no corpo da resposta
-| 404 | não foi encontrada a série com o id informado
+| 200 | Dados retornados no corpo da resposta
+| 404 | Não foi encontrada a série com o id informado
 
 ---
 
@@ -94,8 +94,8 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 | código | descrição 
 |--------|-----------
-| 202 | série apagada com sucesso
-| 404 | série não encontrada
+| 202 | Série apagada com sucesso
+| 404 | Série não encontrada
 
 ---
 
@@ -155,8 +155,8 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 | campo | tipo | obrigatório | descrição 
 |-------|------|-------------|-----------
 | nome | String | sim | É o nome do filme
-| categoria_id | int | sim | é o id de uma categoria
-| usuario_id| int | sim | é o id do usuário
+| categoria_id | int | sim | É o id de uma categoria
+| usuario_id| int | sim | É o id do usuário
 | nome_diretor | String | sim | É o nome do diretor
 | duracao | String | não | Aqui se coloca a duração do filme
 
@@ -178,7 +178,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 | codigo | descrição
 |--------|-----------
-| 201 | Filme cadastrada com sucesso
+| 201 | Filme cadastrado com sucesso
 | 400 | Erro na validaçao dos dados da requisição
 
 ---
