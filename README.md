@@ -5,7 +5,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 ## Endponits
 -Series
     -[Cadastrar](#cadastrar-series)
-    -Listar todas
+    -[Listar todas](#listar-series)
     -[Apagar](#apagar-serie)
     -[Mostrar os detalhes](#detalhes-serie)
 -Filmes
