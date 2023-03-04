@@ -14,11 +14,11 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
     - [Apagar](#apagar-filme)
     - [Mostrar os detalhes](#detalhes-filme)
 - Usuario
-    - Cadastrar
+    - [Cadastrar](#cadastrar-usuário)
     - Listar todas
     - Apagar
     - Alterar 
-    - Mostrar os detalhes
+    - [Mostrar os detalhes](#detalhes-do-usuário)
 
 ---
 ### Cadastrar Series
@@ -275,5 +275,128 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 |--------|-----------
 | 200 | Dados retornados no corpo da resposta
 | 404 | Dados não encontrado
+
+---
+
+### Cadastrar Usuário
+`POST` /watchlist/api/usuario
+
+| campo | tipo | obrigatório | descrição 
+|-------|------|-------------|-----------
+| nome | String | sim | É o nome do usuário
+| foto_perfil | File | não | É a foto de perfil do usuário
+| email | String | sim | É o email do usuário
+| telefone | String | sim | É o telefone do usuário 
+
+**Exemplo de corpo do request**
+
+```js
+
+    {
+        "nome" : "Kleber",
+        "foto_perfil" : "https://picsum.photos/seed/picsum/200/300",
+        "email" : "kleber@gmail.com",
+        "telefone" : "+55 (11) 98765-4321"
+    }
+
+```
+
+**Códigos de Repsosta**
+
+| codigo | descrição
+|--------|-----------
+| 201 | Usuário cadastrado com sucesso
+| 400 | Erro na validação dos dados da requisição
+
+---
+
+### Detalhes do Usuário
+`GET` /watchlist/api/usuario/{id}
+
+**Exemplo de corpo para resposta**
+
+```js
+
+    {
+        "nome" : "Kleber",
+        "foto_perfil" : "https://picsum.photos/seed/picsum/200/300",
+        "email" : "kleber@gmail.com",
+        "telefone" : "+55 (11) 98765-4321"
+    }
+
+```
+
+**Códigos de Resposta**
+
+| código | descrição 
+|--------|-----------
+| 200 | Dados retornados no corpo da resposta
+| 404 | Não foi encontrado o usuário com o id informado
+
+---
+
+### Apagar Usuário
+`DELETE` /watchlist/api/usuario/{id}
+
+**Códigos de Resposta**
+
+| código | descrição 
+|--------|-----------
+| 202 | Usuário apagada com sucesso
+| 404 | Usuário não encontrada
+
+---
+
+### Listar Usuários
+`GET` /watchlist/api/usuario
+
+**Exemplo de corpo para resposta**
+
+```js
+
+    {
+        "nome" : "Kleber",
+        "foto_perfil" : "https://picsum.photos/seed/picsum/200/300",
+        "email" : "kleber@gmail.com",
+        "telefone" : "+55 (11) 98765-4321"
+    },
+    {
+        "nome" : "Ubirajar",
+        "foto_perfil" : "https://picsum.photos/ubira/picsum/200/300",
+        "email" : "ubirajar@gmail.com",
+        "telefone" : "+55 (21) 97534-0159"
+    }
+
+```
+
+**Códigos de Resposta**
+
+| código | descrição 
+|--------|-----------
+| 200 | Dados retornados no corpo da resposta
+| 404 | Dados não encontrado
+
+---
+
+### Atualizar Usuário
+`PUT` /watchlist/api/usuario/{id}
+
+**Exemplo de corpo do request**
+
+```js
+
+    {
+        "email" : "klebinhodamassa@gmail.com",
+        "telefone" : "+55 (11) 99999-0000"
+    }
+
+```
+
+**Códigos de Repsosta**
+
+| codigo | descrição
+|--------|-----------
+| 201 | Usuário arualizado com sucesso
+| 400 | Erro na validação dos dados da requisição
 
 ---
