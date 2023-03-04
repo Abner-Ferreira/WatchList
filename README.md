@@ -1,9 +1,9 @@
 # WatchList
 
-Uma API para o sistema de guardar seus filmes e séries que deseja assistir
+Uma API para o sistema de guardar seus filmes e séries que deseja assistir!
 
 ## Endponits
-- Series
+- Séries
     - [Cadastrar](#cadastrar-series)
     - [Listar todas](#listar-series)
     - [Apagar](#apagar-serie)
@@ -13,7 +13,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
     - [Listar todas](#listar-filmes)
     - [Apagar](#apagar-filme)
     - [Mostrar os detalhes](#detalhes-filme)
-- Usuario
+- Usuário
     - [Cadastrar](#cadastrar-usuário)
     - [Listar todas](#listar-usuários)
     - [Apagar](#apagar-usuário)
@@ -24,7 +24,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 ### Cadastrar Series
 `POST` /watchlist/api/serie
 
-| campo | tipo | obrigatório | descrição 
+| Campo | Tipo | Obrigatório | Descrição 
 |-------|------|-------------|-----------
 | nome | String | sim | É o nome da série
 | categoria_id | int | sim | É o id de uma categoria
@@ -48,7 +48,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Repsosta**
 
-| codigo | descrição
+| Código | Descrição
 |--------|-----------
 | 201 | Série cadastrada com sucesso
 | 400 | Erro na validação dos dados da requisição
@@ -80,7 +80,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Resposta**
 
-| código | descrição 
+| Código | Descrição 
 |--------|-----------
 | 200 | Dados retornados no corpo da resposta
 | 404 | Não foi encontrada a série com o id informado
@@ -92,7 +92,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Resposta**
 
-| código | descrição 
+| Código | Descrição 
 |--------|-----------
 | 202 | Série apagada com sucesso
 | 404 | Série não encontrada
@@ -143,7 +143,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Resposta**
 
-| código | descrição 
+| Código | Descrição 
 |--------|-----------
 | 200 | Dados retornados no corpo da resposta
 | 404 | Dados não encontrado
@@ -152,7 +152,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 ### Cadastrar Filmes
 `POST` /watchlist/api/filme
 
-| campo | tipo | obrigatório | descrição 
+| Campo | Tipo | Obrigatório | Descrição 
 |-------|------|-------------|-----------
 | nome | String | sim | É o nome do filme
 | categoria_id | int | sim | É o id de uma categoria
@@ -176,10 +176,10 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Repsosta**
 
-| codigo | descrição
+| Código | Descrição
 |--------|-----------
 | 201 | Filme cadastrado com sucesso
-| 400 | Erro na validaçao dos dados da requisição
+| 400 | Erro na validaçã o dos dados da requisição
 
 ---
 
@@ -208,7 +208,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Resposta**
 
-| código | descrição 
+| Código | Descrição 
 |--------|-----------
 | 200 | Dados retornados no corpo da resposta
 | 404 | Não foi encontrado o filme com o id informado
@@ -220,7 +220,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Resposta**
 
-| código | descrição 
+| Código | Descrição 
 |--------|-----------
 | 202 | Filme apagado com sucesso
 | 404 | Filme não encontrado
@@ -271,7 +271,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Resposta**
 
-| código | descrição 
+| Código | Descrição 
 |--------|-----------
 | 200 | Dados retornados no corpo da resposta
 | 404 | Dados não encontrado
@@ -281,7 +281,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 ### Cadastrar Usuário
 `POST` /watchlist/api/usuario
 
-| campo | tipo | obrigatório | descrição 
+| Campo | Tipo | Obrigatório | Descrição 
 |-------|------|-------------|-----------
 | nome | String | sim | É o nome do usuário
 | foto_perfil | File | não | É a foto de perfil do usuário
@@ -303,7 +303,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Repsosta**
 
-| codigo | descrição
+| Código | Descrição
 |--------|-----------
 | 201 | Usuário cadastrado com sucesso
 | 400 | Erro na validação dos dados da requisição
@@ -328,7 +328,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Resposta**
 
-| código | descrição 
+| Código | Descrição 
 |--------|-----------
 | 200 | Dados retornados no corpo da resposta
 | 404 | Não foi encontrado o usuário com o id informado
@@ -340,10 +340,10 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Resposta**
 
-| código | descrição 
+| Código | Descrição 
 |--------|-----------
-| 202 | Usuário apagada com sucesso
-| 404 | Usuário não encontrada
+| 202 | Usuário apagado com sucesso
+| 404 | Usuário não encontrado
 
 ---
 
@@ -371,7 +371,7 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Resposta**
 
-| código | descrição 
+| Código | Descrição 
 |--------|-----------
 | 200 | Dados retornados no corpo da resposta
 | 404 | Dados não encontrado
@@ -394,9 +394,9 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
 
 **Códigos de Repsosta**
 
-| codigo | descrição
+| Código | Descrição
 |--------|-----------
-| 201 | Usuário arualizado com sucesso
+| 201 | Usuário atualizado com sucesso
 | 400 | Erro na validação dos dados da requisição
 
 ---
