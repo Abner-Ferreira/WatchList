@@ -15,9 +15,9 @@ Uma API para o sistema de guardar seus filmes e séries que deseja assistir
     - [Mostrar os detalhes](#detalhes-filme)
 - Usuario
     - [Cadastrar](#cadastrar-usuário)
-    - Listar todas
-    - Apagar
-    - Alterar 
+    - [Listar todas](#listar-usuários)
+    - [Apagar](#apagar-usuário)
+    - [Alterar](#atualizar-usuário) 
     - [Mostrar os detalhes](#detalhes-do-usuário)
 
 ---
