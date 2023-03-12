@@ -9,14 +9,6 @@ public class Series {
     private String duracao;
 
     
-
-    public Series(String nome, int categoria_id, int usuario_id, String nome_diretor, String duracao) {
-        this.nome = nome;
-        this.categoria_id = categoria_id;
-        this.usuario_id = usuario_id;
-        this.nome_diretor = nome_diretor;
-        this.duracao = duracao;
-    }
     public String getNome() {
         return nome;
     }
@@ -47,6 +39,13 @@ public class Series {
     public void setDuracao(String duracao) {
         this.duracao = duracao;
     }
+    public Series(String nome, int categoria_id, int usuario_id, String nome_diretor, String duracao) {
+        this.nome = nome;
+        this.categoria_id = categoria_id;
+        this.usuario_id = usuario_id;
+        this.nome_diretor = nome_diretor;
+        this.duracao = duracao;
+    }
     @Override
     public String toString() {
         return "Series [nome=" + nome + ", categoria_id=" + categoria_id + ", usuario_id=" + usuario_id
@@ -54,8 +53,5 @@ public class Series {
     }
 
     
-   
-
     
-
 }

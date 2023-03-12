@@ -1,5 +1,7 @@
 package br.fiap.com.watchlist.controllers;
 
+
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,4 +20,18 @@ public class SeriesController {
         return serie;
     }
 
+
+
+//     @GetMapping("/api/series")
+
+//     public ArrayList<Series> list(){
+
+//         ArrayList<Series> series = new ArrayList<>();
+
+
+//         series.add(new Series("Friends" , 1, 1, "Ben Winston" , "10 temporadas"  ));
+
+//         return series;
+
+//     }
 }

@@ -29,9 +29,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/api/usuarios")
-    public ArrayList list(){
+    public ArrayList<Usuario> list(){
 
-        var usuarios = new ArrayList<>();
+        ArrayList<Usuario> usuarios = new ArrayList<>();
 
         usuarios.add(new Usuario("Kleber", "https://picsum.photos/seed/picsum/200/300", "kleber@gmail.com", "+55 (11) 98765-4321"));
         usuarios.add(new Usuario("Ubirajar", "https://picsum.photos/ubira/picsum/200/300", "ubirajar@gmail.com", "+55 (21) 97534-0159"));
