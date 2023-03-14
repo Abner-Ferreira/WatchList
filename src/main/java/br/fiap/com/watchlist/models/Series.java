@@ -2,13 +2,28 @@ package br.fiap.com.watchlist.models;
 
 public class Series {
     
+    private Long id;
     private String nome;
     private int categoria_id;
     private int usuario_id;
     private String nome_diretor;
     private String duracao;
-
     
+    
+    public Series(String nome, int categoria_id, int usuario_id, String nome_diretor, String duracao) {
+        this.nome = nome;
+        this.categoria_id = categoria_id;
+        this.usuario_id = usuario_id;
+        this.nome_diretor = nome_diretor;
+        this.duracao = duracao;
+    }
+    
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getNome() {
         return nome;
     }
@@ -37,13 +52,6 @@ public class Series {
         return duracao;
     }
     public void setDuracao(String duracao) {
-        this.duracao = duracao;
-    }
-    public Series(String nome, int categoria_id, int usuario_id, String nome_diretor, String duracao) {
-        this.nome = nome;
-        this.categoria_id = categoria_id;
-        this.usuario_id = usuario_id;
-        this.nome_diretor = nome_diretor;
         this.duracao = duracao;
     }
     @Override

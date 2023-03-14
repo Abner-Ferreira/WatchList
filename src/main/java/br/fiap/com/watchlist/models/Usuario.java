@@ -3,11 +3,12 @@ package br.fiap.com.watchlist.models;
 
 public class Usuario {
     
+    private Long id;
     private String nome;
     private String foto_perfil;
     private String email;
     private String telefone;
-
+    
 
     public Usuario(String nome, String string, String email, String telefone) {
         this.nome = nome;
@@ -15,8 +16,16 @@ public class Usuario {
         this.email = email;
         this.telefone = telefone;
     }
+    
+    
+    public Long getId() {
+        return id;
+    }
 
 
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getNome() {
         return nome;
     }
