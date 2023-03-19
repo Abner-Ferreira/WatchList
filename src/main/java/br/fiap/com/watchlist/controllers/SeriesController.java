@@ -9,12 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.fiap.com.watchlist.models.Series;
 
@@ -60,7 +55,7 @@ public class SeriesController {
     }
 
 
-     // Apagar Usuario
+     // Apagar Serie
      @DeleteMapping("/api/serie/{id}")
      public ResponseEntity<Series> destroy(@PathVariable Long id) {
          log.info("Apagando usuario com id: " + id);
@@ -73,5 +68,18 @@ public class SeriesController {
          series.remove(serieEncontrada.get());
          return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
  
+     }
+     //Atualizar Serie
+     @PutMapping("/api/serie/{id}")
+    public ResponseEntity<Series> update(@PathVariable Long id,@RequestBody Series serie){
+        log.info("alterando serie com id "+id);
+        var serieEncotrada = series.stream().filter(d -> d.getId().equals(id)).findFirst();
+        if(serieEncotrada.isEmpty())
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        series.remove((serieEncotrada.get()));
+        serie.setId(id);
+        series.add(serie);
+
+        return ResponseEntity.ok(serie);
      }
 }

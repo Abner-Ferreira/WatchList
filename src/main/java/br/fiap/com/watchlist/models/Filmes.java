@@ -1,7 +1,7 @@
 package br.fiap.com.watchlist.models;
 
 public class Filmes {
-    
+    private Long id;
     private String nome;
     private int categoria_id;
     private int usuario_id;
@@ -17,7 +17,13 @@ public class Filmes {
         this.duracao = duracao;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getNome() {
         return nome;
     }
