@@ -7,14 +7,17 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.fiap.com.watchlist.models.Series;
+import br.fiap.com.watchlist.repository.SerieRepository;
 
 
 @RestController
+@RequestMapping("/api/serie")
 public class SeriesController {
     
 
@@ -22,19 +25,23 @@ public class SeriesController {
 
     List<Series> series = new ArrayList<>();
 
+    @Autowired
+    SerieRepository repository;
+    
+    
     // Listar Series
-    @GetMapping("/api/serie")
+    @GetMapping
     public List<Series> index(){
         // var serie = new Series( "Friends" , 1, 1, "Ben Winston" , "10 temporadas"  );
-        return series;
+        return repository.findAll();
     }
 
     // Criar Serie
-    @PostMapping("/api/serie")
+    @PostMapping
     public ResponseEntity<Series> create(@RequestBody Series serie) {
         log.info("Cadastrando serie: " + serie);
-        serie.setId(series.size() + 1l);
-        series.add(serie);
+
+        repository.save(serie);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(serie);
 
@@ -42,43 +49,43 @@ public class SeriesController {
 
 
     // Detalhes Serie
-    @GetMapping("/api/serie/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Series> show(@PathVariable Long id) {
         log.info("Buscando serie com o id: " + id);
 
-        var serieEncontrada = series.stream().filter(u -> u.getId().equals(id)).findFirst();
+        var serieEncontrada = repository.findById(id);
 
         if (serieEncontrada.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(serieEncontrada.get());
     }
 
 
      // Apagar Serie
-     @DeleteMapping("/api/serie/{id}")
+     @DeleteMapping("{id}")
      public ResponseEntity<Series> destroy(@PathVariable Long id) {
          log.info("Apagando usuario com id: " + id);
-         var serieEncontrada = series.stream().filter(d -> d.getId().equals(id)).findFirst();
+         var serieEncontrada = repository.findById(id);
  
          if (serieEncontrada.isEmpty()) {
-             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+             return ResponseEntity.notFound().build();
          }
  
          series.remove(serieEncontrada.get());
-         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+         return ResponseEntity.noContent().build();
  
      }
      //Atualizar Serie
-     @PutMapping("/api/serie/{id}")
+     @PutMapping("{id}")
     public ResponseEntity<Series> update(@PathVariable Long id,@RequestBody Series serie){
         log.info("alterando serie com id "+id);
-        var serieEncotrada = series.stream().filter(d -> d.getId().equals(id)).findFirst();
+        var serieEncotrada = repository.findById(id);
         if(serieEncotrada.isEmpty())
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        series.remove((serieEncotrada.get()));
+            return  ResponseEntity.notFound().build();
+
         serie.setId(id);
-        series.add(serie);
+        repository.save(serie);
 
         return ResponseEntity.ok(serie);
      }
