@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,9 @@ import br.fiap.com.watchlist.repository.UsuarioRepository;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/usuario")
 public class UsuarioController {
-
-    Logger log = LoggerFactory.getLogger(UsuarioController.class);
-
     List<Usuario> usuarios = new ArrayList<>();
 
     @Autowired

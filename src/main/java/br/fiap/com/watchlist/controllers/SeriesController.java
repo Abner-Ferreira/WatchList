@@ -7,6 +7,7 @@ import java.util.List;
 
 import br.fiap.com.watchlist.repository.UsuarioRepository;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
+@Slf4j
 @RequestMapping("/api/serie")
 public class SeriesController {
-    
-
-    Logger log = LoggerFactory.getLogger(SeriesController.class);
-
     List<Series> series = new ArrayList<>();
 
     @Autowired
