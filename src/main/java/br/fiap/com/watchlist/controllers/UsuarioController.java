@@ -3,6 +3,7 @@ package br.fiap.com.watchlist.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.fiap.com.watchlist.models.Usuario;
 import br.fiap.com.watchlist.repository.UsuarioRepository;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -42,7 +44,7 @@ public class UsuarioController {
 
     // Criar Usuario
     @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> create(@RequestBody @Valid Usuario usuario) {
         log.info("Cadastrando usuario: " + usuario);
        
         repository.save(usuario);
@@ -55,44 +57,32 @@ public class UsuarioController {
     @GetMapping("{id}")
     public ResponseEntity<Usuario> show(@PathVariable Long id) {
         log.info("Buscando usuario com o id: " + id);
-
-        var usuarioEncontrado = repository.findById(id);
-
-        if (usuarioEncontrado.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(usuarioEncontrado.get());
+        return ResponseEntity.ok(getUsuario(id));
     }
 
     // Apagar Usuario
     @DeleteMapping("{id}")
     public ResponseEntity<Usuario> destroy(@PathVariable Long id) {
         log.info("Apagando usuario com id: " + id);
-        var usuarioEncontrado = repository.findById(id);
-
-        if (usuarioEncontrado.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        repository.delete(usuarioEncontrado.get());
+        repository.delete(getUsuario(id));
         return ResponseEntity.noContent().build();
 
     }
 
     // Alterar Usuario
     @PutMapping("{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
         log.info("Alterando usuario com id: " + id);
-        var usuarioEncontrado = repository.findById(id);
-
-        if (usuarioEncontrado.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
+        getUsuario(id);
         usuario.setId(id);
         repository.save(usuario);
 
         return ResponseEntity.ok(usuario);
 
+    }
+
+    private Usuario getUsuario(Long id){
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuário não encontrado"));
     }
 }
