@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,38 +27,39 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 @RestController
-@Slf4j
 @RequestMapping("/api/filme")
 public class FilmesController {
-    List<Filmes> filmes = new ArrayList<>();
+    Logger log = LoggerFactory.getLogger(FilmesController.class);
 
     @Autowired
     FilmeRepository filmeRepository;
     @Autowired
-    UsuarioRepository usuarioRepository;
+    PagedResourcesAssembler<Object> assembler;
 
     //Listar Filmes
     @GetMapping
-    public Page<Filmes> index(@RequestParam(required = false) String diretor , @PageableDefault(size = 5) Pageable pageable) {
-        if (diretor==null)
-            return filmeRepository.findAll(pageable);
-        return filmeRepository.findByDiretorContaining(diretor,pageable);
+    public PagedModel<EntityModel<Object>> index(@RequestParam(required = false) String diretor , @PageableDefault(size = 5) Pageable pageable) {
+        Page<Filmes> filmes = (diretor == null)?
+            filmeRepository.findAll(pageable):
+            filmeRepository.findByDiretorContaining(diretor, pageable);
+        return assembler.toModel(filmes.map(Filmes::toEntityModel));
     }
 
     //Criar Serie
     @PostMapping
-    public  ResponseEntity<Filmes> create(@RequestBody @Valid Filmes filme){
+    public  ResponseEntity<Object> create(@RequestBody @Valid Filmes filme){
         log.info("Cadastrando filme: " + filme);
         filmeRepository.save(filme);
-        filme.setUsuario(usuarioRepository.findById(filme.getUsuario().getId()).get());
-        return ResponseEntity.status(HttpStatus.CREATED).body(filme);
+        return ResponseEntity
+                .created(filme.toEntityModel().getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(filme.toEntityModel().getContent());
     }
 
     //Detalhes Filme
     @GetMapping("{id}")
-    public ResponseEntity<Filmes> show(@PathVariable Long id){
+    public EntityModel<Filmes> show(@PathVariable Long id){
         log.info(("Buscando filme com id "+id));
-        return  ResponseEntity.ok(getFilme(id));
+        return  getFilme(id).toEntityModel();
     }
 
     //Apagar Filme
@@ -67,13 +72,13 @@ public class FilmesController {
 
     //Atualizar Filme
     @PutMapping("{id}")
-    public ResponseEntity<Filmes> update(@PathVariable Long id, @RequestBody @Valid Filmes filme){
+    public EntityModel<Filmes> update(@PathVariable Long id, @RequestBody @Valid Filmes filme){
         log.info("Alterando filme com id "+id);
         getFilme(id);
         filme.setId(id);
         filmeRepository.save(filme);
 
-        return ResponseEntity.ok(filme);
+        return filme.toEntityModel();
     }
 
     private Filmes getFilme(Long id){

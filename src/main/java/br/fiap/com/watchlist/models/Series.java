@@ -1,11 +1,18 @@
 package br.fiap.com.watchlist.models;
 
+import br.fiap.com.watchlist.controllers.SeriesController;
+import br.fiap.com.watchlist.controllers.UsuarioController;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Data
 @AllArgsConstructor
@@ -27,4 +34,14 @@ public class Series {
     private String diretor;
     @NotNull(message = "A duração da série é obrigatória")
     private String duracao;
+
+    public EntityModel<Series> toEntityModel(){
+        return EntityModel.of(
+                this,
+                linkTo(methodOn(SeriesController.class).show(id)).withSelfRel(),
+                linkTo(methodOn(SeriesController.class).destroy(id)).withRel("delete"),
+                linkTo(methodOn(SeriesController.class).index(null, Pageable.unpaged())).withRel("all"),
+                linkTo(methodOn(UsuarioController.class).show(this.getUsuario().getId())).withRel("usuario")
+        );
+    }
 }

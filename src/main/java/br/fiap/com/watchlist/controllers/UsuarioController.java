@@ -2,12 +2,17 @@ package br.fiap.com.watchlist.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,40 +28,52 @@ import br.fiap.com.watchlist.models.Usuario;
 import br.fiap.com.watchlist.repository.UsuarioRepository;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
-@Slf4j
 @RequestMapping("/api/usuario")
 public class UsuarioController {
-    List<Usuario> usuarios = new ArrayList<>();
+    Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
     @Autowired
     UsuarioRepository repository;
 
+    @Autowired
+    PagedResourcesAssembler<Object> assembler;
+
     // Listar Usuarios
     @GetMapping
-    public List<Usuario> index() {
-        // var usuario = new Usuario("Kleber",
-        // "https://picsum.photos/seed/picsum/200/300", "kleber@gmail.com", "+55 (11)
-        // 98765-4321");
-        return repository.findAll();
+    public CollectionModel<EntityModel<Usuario>> index() {
+        List<EntityModel<Usuario>> usuarios = repository.findAll().stream()
+                .map(Usuario::toEntityModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(
+                usuarios,
+                linkTo(methodOn(UsuarioController.class).index()).withSelfRel()
+        );
     }
+
 
     // Criar Usuario
     @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody @Valid Usuario usuario) {
-        log.info("Cadastrando usuario: " + usuario);
-       
+    public ResponseEntity<EntityModel<Usuario>> create(@RequestBody @Valid Usuario usuario) {
         repository.save(usuario);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
-
+        EntityModel<Usuario> entityModel = usuario.toEntityModel();
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
+
 
     // Detalhes Usuario
     @GetMapping("{id}")
-    public ResponseEntity<Usuario> show(@PathVariable Long id) {
-        log.info("Buscando usuario com o id: " + id);
-        return ResponseEntity.ok(getUsuario(id));
+    public EntityModel<Usuario> show(@PathVariable Long id) {
+        Usuario usuario = getUsuario(id);
+
+        return usuario.toEntityModel();
     }
 
     // Apagar Usuario
@@ -70,15 +87,18 @@ public class UsuarioController {
 
     // Alterar Usuario
     @PutMapping("{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
-        log.info("Alterando usuario com id: " + id);
+    public ResponseEntity<EntityModel<Usuario>> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
         getUsuario(id);
+
         usuario.setId(id);
         repository.save(usuario);
 
-        return ResponseEntity.ok(usuario);
-
+        EntityModel<Usuario> entityModel = usuario.toEntityModel();
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
+
 
     private Usuario getUsuario(Long id){
         return repository.findById(id)
