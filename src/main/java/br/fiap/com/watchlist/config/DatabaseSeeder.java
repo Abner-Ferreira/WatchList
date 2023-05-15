@@ -23,11 +23,11 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Usuario u1 = new Usuario(1L,"Kleber","https://via.placeholder.com/500x500.png?text=Foto+de+Kleber","klebinho_da_massa@mail.com","11987654321");
-        Usuario u2 = new Usuario(2L, "Ana", "https://via.placeholder.com/500x500.png?text=Foto+de+Ana", "ana@mail.com", "11912345678");
-        Usuario u3 = new Usuario(3L, "Lucas", "https://via.placeholder.com/500x500.png?text=Foto+de+Lucas", "lucas@mail.com", "11923456789");
-        Usuario u4 = new Usuario(4L, "Camila", "https://via.placeholder.com/500x500.png?text=Foto+de+Camila", "camila@mail.com", "11934567890");
-        Usuario u5 = new Usuario(5L, "Pedro", "https://via.placeholder.com/500x500.png?text=Foto+de+Pedro", "pedro@mail.com", "11945678901");
+        Usuario u1 = new Usuario(1L,"Kleber","https://via.placeholder.com/500x500.png?text=Foto+de+Kleber","klebinho_da_massa@mail.com","1234senha", "11987654321");
+        Usuario u2 = new Usuario(2L, "Ana", "https://via.placeholder.com/500x500.png?text=Foto+de+Ana", "ana@mail.com", "senha1234","11912345678");
+        Usuario u3 = new Usuario(3L, "Lucas", "https://via.placeholder.com/500x500.png?text=Foto+de+Lucas", "lucas@mail.com", "luc@s2015","11923456789");
+        Usuario u4 = new Usuario(4L, "Camila", "https://via.placeholder.com/500x500.png?text=Foto+de+Camila", "camila@mail.com", "Camilaa2007","11934567890");
+        Usuario u5 = new Usuario(5L, "Pedro", "https://via.placeholder.com/500x500.png?text=Foto+de+Pedro", "pedro@mail.com", "12345Pedro", "11945678901");
         usuarioRepository.saveAll(List.of(u1,u2,u3,u4,u5));
 
         serieRepository.saveAll(List.of(

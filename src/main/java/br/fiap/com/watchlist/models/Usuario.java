@@ -11,17 +11,24 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import lombok.Builder;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Usuario{
+@Builder
+public class Usuario implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +38,9 @@ public class Usuario{
     private String foto_perfil;
     @NotNull(message = "O email do usuário é obrigatório")
     private String email;
+
+    private String senha;
+
     @NotBlank
     @Size(min = 11, max = 11, message = "O telefone deve conter 11 dígitos")
     private String telefone;
@@ -41,5 +51,43 @@ public class Usuario{
                 linkTo(methodOn(UsuarioController.class).show(id)).withSelfRel(),
                 linkTo(methodOn(UsuarioController.class).destroy(id)).withRel("delete")
         );
+    }
+
+   
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        return List.of(new SimpleGrantedAuthority("ROLE_USUARIO"));
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
