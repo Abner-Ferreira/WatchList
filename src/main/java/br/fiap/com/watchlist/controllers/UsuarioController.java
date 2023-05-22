@@ -1,107 +1,51 @@
 package br.fiap.com.watchlist.controllers;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import br.fiap.com.watchlist.models.Credencial;
 import br.fiap.com.watchlist.models.Usuario;
 import br.fiap.com.watchlist.repository.UsuarioRepository;
-import org.springframework.web.server.ResponseStatusException;
+import br.fiap.com.watchlist.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/usuario")
+@Tag(name = "auth")
 public class UsuarioController {
-    Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
     @Autowired
     UsuarioRepository repository;
 
     @Autowired
-    PagedResourcesAssembler<Object> assembler;
+    AuthenticationManager manager;
 
-    // Listar Usuarios
-    @GetMapping
-    public CollectionModel<EntityModel<Usuario>> index() {
-        List<EntityModel<Usuario>> usuarios = repository.findAll().stream()
-                .map(Usuario::toEntityModel)
-                .collect(Collectors.toList());
+    @Autowired
+    PasswordEncoder encoder;
 
-        return CollectionModel.of(
-                usuarios,
-                linkTo(methodOn(UsuarioController.class).index()).withSelfRel()
-        );
-    }
+    @Autowired
+    TokenService tokenService;
 
-
-    // Criar Usuario
-    @PostMapping
-    public ResponseEntity<EntityModel<Usuario>> create(@RequestBody @Valid Usuario usuario) {
+    @PostMapping("/api/registrar")
+    public ResponseEntity<Usuario> registrar(@RequestBody @Valid Usuario usuario){
+        usuario.setSenha(encoder.encode(usuario.getSenha()));
         repository.save(usuario);
 
-        EntityModel<Usuario> entityModel = usuario.toEntityModel();
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
-    }
-
-
-    // Detalhes Usuario
-    @GetMapping("{id}")
-    public EntityModel<Usuario> show(@PathVariable Long id) {
-        Usuario usuario = getUsuario(id);
-
-        return usuario.toEntityModel();
-    }
-
-    // Apagar Usuario
-    @DeleteMapping("{id}")
-    public ResponseEntity<Usuario> destroy(@PathVariable Long id) {
-        log.info("Apagando usuario com id: " + id);
-        repository.delete(getUsuario(id));
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
 
     }
 
-    // Alterar Usuario
-    @PutMapping("{id}")
-    public ResponseEntity<EntityModel<Usuario>> update(@PathVariable Long id, @RequestBody @Valid Usuario usuario) {
-        getUsuario(id);
-
-        usuario.setId(id);
-        repository.save(usuario);
-
-        EntityModel<Usuario> entityModel = usuario.toEntityModel();
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
+    @PostMapping("/api/login")
+    public ResponseEntity<Object> login(@RequestBody @Valid Credencial credencial){
+        manager.authenticate(credencial.toAuthentication());
+        var token = tokenService.generateToken(credencial);
+        return ResponseEntity.ok(token);
     }
 
-
-    private Usuario getUsuario(Long id){
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuário não encontrado"));
-    }
 }

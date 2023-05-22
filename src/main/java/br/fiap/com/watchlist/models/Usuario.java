@@ -45,16 +45,6 @@ public class Usuario implements UserDetails{
     @Size(min = 11, max = 11, message = "O telefone deve conter 11 dígitos")
     private String telefone;
 
-    public EntityModel<Usuario> toEntityModel(){
-        return EntityModel.of(
-                this,
-                linkTo(methodOn(UsuarioController.class).show(id)).withSelfRel(),
-                linkTo(methodOn(UsuarioController.class).destroy(id)).withRel("delete")
-        );
-    }
-
-   
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub

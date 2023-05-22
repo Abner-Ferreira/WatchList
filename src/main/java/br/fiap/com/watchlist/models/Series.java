@@ -27,9 +27,6 @@ public class Series {
     @NotNull(message = "O nome da série é obrigatório")
     private String nome;
     private int categoria_id;
-    @NotNull
-    @ManyToOne
-    private Usuario usuario;
     @NotNull(message = "O nome do diretor é obrigatório")
     private String diretor;
     @NotNull(message = "A duração da série é obrigatória")
@@ -40,8 +37,7 @@ public class Series {
                 this,
                 linkTo(methodOn(SeriesController.class).show(id)).withSelfRel(),
                 linkTo(methodOn(SeriesController.class).destroy(id)).withRel("delete"),
-                linkTo(methodOn(SeriesController.class).index(null, Pageable.unpaged())).withRel("all"),
-                linkTo(methodOn(UsuarioController.class).show(this.getUsuario().getId())).withRel("usuario")
+                linkTo(methodOn(SeriesController.class).index(null, Pageable.unpaged())).withRel("all")
         );
     }
 }
