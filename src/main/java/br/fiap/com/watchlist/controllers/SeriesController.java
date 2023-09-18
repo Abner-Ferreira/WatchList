@@ -42,10 +42,10 @@ public class SeriesController {
     
     // Listar Series
     @GetMapping
-    public PagedModel<EntityModel<Object>> index(@RequestParam(required = false) String nome_diretor, @PageableDefault(size = 5)Pageable pageable){
-        Page<Series> series = (nome_diretor==null)?
+    public PagedModel<EntityModel<Object>> index(@RequestParam(required = false) String diretor, @PageableDefault(size = 5)Pageable pageable){
+        Page<Series> series = (diretor==null)?
                 serieRepository.findAll(pageable):
-                serieRepository.findByDiretorContaining(nome_diretor, pageable);
+                serieRepository.findByDiretorContaining(diretor, pageable);
         return  assembler.toModel(series.map(Series::toEntityModel));
     }
 
