@@ -42,14 +42,15 @@ public class SeriesController {
     
     // Listar Series
     @GetMapping
-    public PagedModel<EntityModel<Object>> index(@RequestParam(required = false) String diretor, @PageableDefault(size = 5)Pageable pageable){
-        Page<Series> series = (diretor==null)?
-                serieRepository.findAll(pageable):
-                serieRepository.findByDiretorContaining(diretor, pageable);
-        return  assembler.toModel(series.map(Series::toEntityModel));
-    }
+    public PagedModel<EntityModel<Object>> index(@RequestParam(required = false) String diretor,
+                                                 @RequestParam(required = true) Long userId, @PageableDefault(size = 5) Pageable pageable) {
 
-    // Criar Serie
+        Page<Series> series = (diretor == null) ?
+                serieRepository.findByUsuarioId(userId, pageable) :
+                serieRepository.findByUsuarioIdAndDiretorContaining(userId, diretor, pageable);
+
+        return assembler.toModel(series.map(Series::toEntityModel));
+    }
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody @Valid Series serie) {
         log.info("Cadastrando serie: " + serie);

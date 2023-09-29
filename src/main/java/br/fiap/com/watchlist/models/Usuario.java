@@ -1,10 +1,8 @@
 package br.fiap.com.watchlist.models;
 
 import br.fiap.com.watchlist.controllers.UsuarioController;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -35,15 +33,16 @@ public class Usuario implements UserDetails{
     private Long id;
     @NotNull(message = "O nome do usuário é obrigatório")
     private String nome;
-    private String foto_perfil;
     @NotNull(message = "O email do usuário é obrigatório")
     private String email;
-
     private String senha;
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<Filmes> filmes;
 
-    @NotBlank
-    @Size(min = 11, max = 11, message = "O telefone deve conter 11 dígitos")
-    private String telefone;
+    @OneToMany(mappedBy = "usuario")
+    @JsonIgnore
+    private List<Series> series;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

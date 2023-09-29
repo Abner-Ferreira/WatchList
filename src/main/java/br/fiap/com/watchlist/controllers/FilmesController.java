@@ -38,12 +38,16 @@ public class FilmesController {
 
     //Listar Filmes
     @GetMapping
-    public PagedModel<EntityModel<Object>> index(@RequestParam(required = false) String diretor , @PageableDefault(size = 5) Pageable pageable) {
-        Page<Filmes> filmes = (diretor == null)?
-            filmeRepository.findAll(pageable):
-            filmeRepository.findByDiretorContaining(diretor, pageable);
+    public PagedModel<EntityModel<Object>> index(@RequestParam(required = false) String diretor,
+                                                 @RequestParam(required = true) Long userId, @PageableDefault(size = 5) Pageable pageable) {
+
+        Page<Filmes> filmes = (diretor == null) ?
+                filmeRepository.findByUsuarioId(userId, pageable) :
+                filmeRepository.findByUsuarioIdAndDiretorContaining(userId, diretor, pageable);
+
         return assembler.toModel(filmes.map(Filmes::toEntityModel));
     }
+
 
     //Criar Serie
     @PostMapping

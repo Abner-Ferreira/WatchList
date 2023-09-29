@@ -31,13 +31,16 @@ public class Filmes {
     private String diretor;
     @NotNull(message = "A duração do filme é obrigatória")
     private String duracao;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
     public EntityModel<Filmes> toEntityModel(){
         return EntityModel.of(
                 this,
                 linkTo(methodOn(FilmesController.class).show(id)).withSelfRel(),
                 linkTo(methodOn(FilmesController.class).destroy(id)).withRel("delete"),
-                linkTo(methodOn(FilmesController.class).index(null, Pageable.unpaged())).withRel("all")
+                linkTo(methodOn(FilmesController.class).index(null,null, Pageable.unpaged())).withRel("all")
 
         );
     }

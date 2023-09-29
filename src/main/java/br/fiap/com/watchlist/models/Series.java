@@ -31,13 +31,16 @@ public class Series {
     private String diretor;
     @NotNull(message = "A duração da série é obrigatória")
     private String duracao;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
     public EntityModel<Series> toEntityModel(){
         return EntityModel.of(
                 this,
                 linkTo(methodOn(SeriesController.class).show(id)).withSelfRel(),
                 linkTo(methodOn(SeriesController.class).destroy(id)).withRel("delete"),
-                linkTo(methodOn(SeriesController.class).index(null, Pageable.unpaged())).withRel("all")
+                linkTo(methodOn(SeriesController.class).index(null,null, Pageable.unpaged())).withRel("all")
         );
     }
 }

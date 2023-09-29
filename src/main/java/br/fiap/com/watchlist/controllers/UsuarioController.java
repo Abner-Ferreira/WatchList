@@ -1,5 +1,7 @@
 package br.fiap.com.watchlist.controllers;
 import br.fiap.com.watchlist.models.Credencial;
+import br.fiap.com.watchlist.models.LoginResponse;
+import br.fiap.com.watchlist.models.Token;
 import br.fiap.com.watchlist.models.Usuario;
 import br.fiap.com.watchlist.repository.UsuarioRepository;
 import br.fiap.com.watchlist.service.TokenService;
@@ -44,8 +46,11 @@ public class UsuarioController {
     @PostMapping("/api/login")
     public ResponseEntity<Object> login(@RequestBody @Valid Credencial credencial){
         manager.authenticate(credencial.toAuthentication());
-        var token = tokenService.generateToken(credencial);
-        return ResponseEntity.ok(token);
+        Usuario usuario = repository.findByEmail(credencial.email()).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        Token token = tokenService.generateToken(credencial);
+        var response = new LoginResponse(token, usuario);
+
+        return ResponseEntity.ok(response);
     }
 
 }
